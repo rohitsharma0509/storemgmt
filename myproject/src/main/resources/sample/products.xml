@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<products>
+	<product>
+		<category>Cloths</category>
+		<name>Jeans</name>
+		<code>PRD0000001</code>
+		<brandName>Levis</brandName>
+		<quantity>100</quantity>
+		<alertQuantity>10</alertQuantity>
+		<purchasePrice>3000.0</purchasePrice>
+		<sellPrice>2000.0</sellPrice>
+	</product>
+	<product>
+		<category>Electronics</category>
+		<name>Redmi Note 5 Pro</name>
+		<code>PRD0000002</code>
+		<brandName>Redmi</brandName>
+		<quantity>50</quantity>
+		<alertQuantity>5</alertQuantity>
+		<purchasePrice>15000.0</purchasePrice>
+		<sellPrice>10000.0</sellPrice>
+	</product>
+</products>
