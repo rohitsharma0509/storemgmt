@@ -91,7 +91,7 @@ String action = "Save";
 					<div class="row form-group-row">
 						<div class="col-sm-1"></div>
 						<div class="col-sm-11">
-	            			<button type="submit" class="btn btn-info"><%=action %></button>
+	            			<button type="submit" class="btn btn-sm btn-success"><%=action %></button>
 	            		</div>
 	        		</div>
 				</div>

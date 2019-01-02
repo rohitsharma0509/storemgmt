@@ -11,10 +11,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,7 @@ import com.app.myproject.validator.ProductValidator;
 
 @Controller
 public class ProductController {
-
+    
 	@Inject
 	private ProductService productService;
 	
@@ -43,7 +45,7 @@ public class ProductController {
 	@Inject
 	private ProductValidator productValidator;
 	
-	@RequestMapping(value = RequestUrls.ADD_PRODUCT, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ADD_PRODUCT)
 	public String addProduct(Model model, @RequestParam(value = FieldNames.ID, required=false) Long id) {
 		ProductDto productDto;
 		if(id != null){
@@ -56,7 +58,7 @@ public class ProductController {
 		return RequestUrls.ADD_PRODUCT;
 	}
 	
-	@RequestMapping(value = RequestUrls.PRODUCTS, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.PRODUCTS)
 	public String addProduct(Model model, @ModelAttribute(FieldNames.PRODUCTDTO)  @Valid ProductDto productDto, BindingResult bindingResult) {
 		productValidator.validate(productDto, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -68,7 +70,7 @@ public class ProductController {
 		return "redirect:"+RequestUrls.PRODUCTS;
 	}
 	
-	@RequestMapping(value =RequestUrls.PRODUCTS, method = RequestMethod.GET)
+	@GetMapping(value =RequestUrls.PRODUCTS)
 	public String getProducts(Model model, 
 			@RequestParam(required = false) String categoryId,
 			@RequestParam(required = false) String brandName,
@@ -92,31 +94,31 @@ public class ProductController {
 		return RequestUrls.PRODUCTS;
 	}
 	
-	@RequestMapping(value = RequestUrls.DELETE_PRODUCT, method = RequestMethod.DELETE)
+	@DeleteMapping(value = RequestUrls.DELETE_PRODUCT)
 	public String deleteProduct(Model model, @PathVariable(FieldNames.ID) Long id) {
 		productService.deleteProduct(id);
 		return RequestUrls.PRODUCTS;
 	}
 	
-	@RequestMapping(value = RequestUrls.PRODUCTS, method = RequestMethod.PUT)
+	@PutMapping(value = RequestUrls.PRODUCTS)
 	public String editProduct(Model model, @ModelAttribute(FieldNames.PRODUCT) Product product) {
 		productService.editProduct(product);
 		return RequestUrls.PRODUCTS;
 	}
 	
-	@RequestMapping(value = RequestUrls.PRODUCTS_IMPORT, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.PRODUCTS_IMPORT)
 	public String importProducts() {
 		return RequestUrls.PRODUCTS_IMPORT_FILE;
 	}
 	
-	@RequestMapping(value = RequestUrls.PRODUCTS_SAVE, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.PRODUCTS_SAVE)
 	public String importProductsFromFile(@RequestParam(FieldNames.FILE) MultipartFile multiPartFile, @RequestParam(required= true) String fileType) {
 		productService.importProducts(multiPartFile, fileType);
 		return RequestUrls.PRODUCTS_IMPORT_FILE;
 	}
 	
 	//Non-admin API
-	@RequestMapping(value = RequestUrls.PRODUCT_ALL, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.PRODUCT_ALL)
 	public String getAllProducts(Model model,
 			@RequestParam(required = false) String categoryId,
 			@RequestParam(required = false) String brandName,
@@ -133,7 +135,7 @@ public class ProductController {
 		return "allProducts";
 	}
 	
-	@RequestMapping(value = RequestUrls.PRODUCTS_AJAX, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.PRODUCTS_AJAX)
 	public String loadProducts(Model model, @RequestParam(required = false) String categoryId,
 			@RequestParam(required = false) String brandName,
 			@RequestParam(required = false) String productName,

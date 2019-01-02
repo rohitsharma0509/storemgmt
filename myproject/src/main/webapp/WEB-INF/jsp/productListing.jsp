@@ -11,10 +11,10 @@
 	}
 </style>
 <c:forEach var="product" items="${page.getContent()}" varStatus="loop">
-	<c:if test="${loop.index ==0 || (loop.index % 3) == 0}">
+	<c:if test="${loop.index ==0 || (loop.index % 4) == 0}">
 	<div class="row">
 	</c:if>
-		<div class="col-sm-4">
+		<div class="col-sm-3">
 			<div class="card productCard">
 				<c:choose>
 					<c:when test="${product.base64Image != null && product.base64Image != ''}">
@@ -22,9 +22,9 @@
 					</c:when>
 				</c:choose>
 				<div class="card-body shadow">
-					<h6 class="card-title"><b><spring:message code="Name" text="Name" />:</b> ${product.name}</h6>
-					<h6 class="card-title"><b><spring:message code="Code" text="Code" />:</b> ${product.code}</h6>
-					<h6 class="card-title"><b><spring:message code="Price" text="Price" />:</b> ${product.perProductPrice}</h6>
+					<h6 class="card-title">${product.name}</h6>
+					<h6 class="card-title">${product.brandName}</h6>
+					<h6 class="card-title">${product.perProductPrice}</h6>
 					<c:choose>
 						<c:when test="${product.quantity != null && product.quantity > 0}">
 							<a href="${contextPath}/checkout?id=${product.id}" class="btn btn-sm btn-transparent"><spring:message code="Buy Now" text="Buy Now" /></a>
@@ -37,13 +37,17 @@
 				</div>
 			</div>
 		</div>
-	<c:if test="${loop.index == (fn:length(page.content)-1) && ((loop.index + 1) % 3) == 1}">
-		<div class="col-sm-8"></div>
+	<c:if test="${loop.index == (fn:length(page.content)-1) && ((loop.index + 1) % 4) == 1}">
+		<div class="col-sm-9"></div>
 	</c:if>
-	<c:if test="${loop.index == (fn:length(page.content)-1) && ((loop.index + 1) % 3) == 2}">
-		<div class="col-sm-4"></div>
+	<c:if test="${loop.index == (fn:length(page.content)-1) && ((loop.index + 1) % 4) == 2}">
+		<div class="col-sm-6"></div>
 	</c:if>
-	<c:if test="${loop.index == (fn:length(page.content)-1) || ((loop.index + 1) % 3) == 0}">
-	</div><div class="row" style="height: 10px;"></div>
+	<c:if test="${loop.index == (fn:length(page.content)-1) && ((loop.index + 1) % 4) == 3}">
+		<div class="col-sm-3"></div>
+	</c:if>
+	<c:if test="${loop.index == (fn:length(page.content)-1) || ((loop.index + 1) % 4) == 0}">
+	</div>
+	<div class="row" style="height: 10px;"></div>
 	</c:if>
 </c:forEach>

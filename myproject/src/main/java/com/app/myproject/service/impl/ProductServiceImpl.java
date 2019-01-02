@@ -114,8 +114,6 @@ public class ProductServiceImpl implements ProductService {
 		int offset = (pageable.getPageNumber() - 1)*pageable.getPageSize();
 		int limit = offset + pageable.getPageSize();
 		
-		//StringBuilder query = new StringBuilder("select * from products where 1=1 ");
-		//StringBuilder countQuery = new StringBuilder("select count(product_id) count from products where 1=1 ");
 		StringBuilder query = new StringBuilder("select p.*, p.quantity-ifnull(sum(od.quantity),0) as availableQty from products p left join order_details od on p.product_id=od.product_id where 1=1 ");
 		StringBuilder countQuery = new StringBuilder("select count(p.product_id) count from products p where 1=1 ");
 		
@@ -135,29 +133,27 @@ public class ProductServiceImpl implements ProductService {
 			criterias.add(new SearchCriteria("productName", params.get("productName"), Constants.LIKE));
 		}
 		
-		query.append(" limit "+offset+", "+limit);
-		System.out.println("Query: "+query);
-		//List<Product> products = queryBuilder.getByQuery(query.toString(), criterias, Product.class);
+		query.append(" group by p.product_id limit "+offset+", "+limit);
 		List<Tuple> tuples = queryBuilder.getTupleByQuery(query.toString(), criterias);
 		List<ProductDto> productDtos = new ArrayList<>();
 		for(Tuple tuple : tuples){
-			ProductDto productDto = new ProductDto();
-			productDto.setId(Long.parseLong(String.valueOf(tuple.get("product_id"))));
-			productDto.setCode(String.valueOf(tuple.get("product_code")));
-			productDto.setName(String.valueOf(tuple.get("product_name")));
-			productDto.setQuantity(Integer.parseInt(String.valueOf(tuple.get("availableQty"))));
-			productDto.setPerProductPrice(Double.parseDouble(String.valueOf(tuple.get("per_product_price"))));
-			productDto.setBrandName(String.valueOf(tuple.get("brand_name")));
-			productDto.setCategoryId(Long.valueOf(String.valueOf(tuple.get("category_id"))));
-			productDto.setAlertQuantity(Integer.parseInt(String.valueOf(tuple.get("alert_quantity"))));
-			productDto.setPurchasePrice(Double.parseDouble(String.valueOf(tuple.get("purchase_price"))));
-			productDtos.add(productDto);
+		    if(!StringUtils.isEmpty(tuple.get("product_id"))) {
+		        ProductDto productDto = new ProductDto();
+		        productDto.setId(Long.parseLong(String.valueOf(tuple.get("product_id"))));
+		        productDto.setCode(String.valueOf(tuple.get("product_code")));
+		        productDto.setName(String.valueOf(tuple.get("product_name")));
+		        productDto.setQuantity(Integer.parseInt(String.valueOf(tuple.get("availableQty"))));
+		        productDto.setPerProductPrice(Double.parseDouble(String.valueOf(tuple.get("per_product_price"))));
+		        productDto.setBrandName(String.valueOf(tuple.get("brand_name")));
+		        productDto.setCategoryId(Long.valueOf(String.valueOf(tuple.get("category_id"))));
+		        productDto.setAlertQuantity(Integer.parseInt(String.valueOf(tuple.get("alert_quantity"))));
+		        productDto.setPurchasePrice(Double.parseDouble(String.valueOf(tuple.get("purchase_price"))));
+		        productDtos.add(productDto);
+		    }
 		}
 
 		Integer totalRecords = queryBuilder.countByQuery(countQuery.toString(), criterias);
-		System.out.println(totalRecords);
 		CustomPage<ProductDto> page = new CustomPage<>();
-		//page.setContent(productMapper.productsToProductDtos(products));
 		page.setContent(productDtos);
 		page.setPageNumber(pageable.getPageNumber() - 1);
 		page.setSize(pageable.getPageSize());

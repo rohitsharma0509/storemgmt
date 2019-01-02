@@ -95,4 +95,5 @@
 		</div>
 	</div>
 </div>
+<div class="row" style="height: 50px;"></div>
 <jsp:include page="footer.jsp"></jsp:include>

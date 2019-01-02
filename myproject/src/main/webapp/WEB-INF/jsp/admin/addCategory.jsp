@@ -35,7 +35,7 @@ String action = "Save";
     </div>
     <div class="form-group row">
     	<label for="name" class="col-sm-1"></label>
-        <button type="submit" class="col-sm-1 btn btn-info"><%=action %></button>
+        <button type="submit" class="col-sm-1 btn btn-sm btn-success"><%=action %></button>
     </div>
 </div>
 </div>
