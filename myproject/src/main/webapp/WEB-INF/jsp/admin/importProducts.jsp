@@ -65,7 +65,7 @@
 		            </div>
 		            <div class="row">
 		            	<div class="col-sm-3"></div>
-		            	<div class="col-sm-9"><button type="submit" class="btn btn-sm btn-success" style="margin-top: 15px;"> Import</button></div>
+		            	<div class="col-sm-9"><button type="submit" class="btn btn-sm btn-info" style="margin-top: 15px;"> Import</button></div>
 		            </div>
 		        </form>
 		    </div>

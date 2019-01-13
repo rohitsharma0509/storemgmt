@@ -128,6 +128,13 @@ public class OrderMapper {
 		return customer;
 	}
 
+	public List<CustomerDto> customersToCustomerDtos(List<Customer> customers) {
+		List<CustomerDto> customerDtos = new ArrayList<>();
+		customers.stream().filter(Objects::nonNull).forEach(customer -> customerDtos.add(customerToCustomerDto(customer)));
+		return customerDtos;
+	}
+	
+	
 	public CustomerDto customerToCustomerDto(Customer customer) {
 		CustomerDto customerDto = new CustomerDto();
 		customerDto.setId(customer.getId());

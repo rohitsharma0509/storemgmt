@@ -60,4 +60,10 @@ public class RequestUrls {
 	public static final String CHANGE_LOCALE = "/changeLocale";
 	public static final String PERSONAL_INFO = "/personalInfo";
 	public static final String MY_ACCOUNT = "/myAccount";
+	
+	public static final String PROFIT_LOSS = "/profitLoss";
+	public static final String DAILY_PROFIT_LOSS = "/dailyProfitLoss";
+	public static final String MONTHLY_PROFIT_LOSS = "/monthlyProfitLoss";
+	public static final String QUARTERLY_PROFIT_LOSS = "/quarterlyProfitLoss";
+	public static final String YEARLY_PROFIT_LOSS = "/yearlyProfitLoss";
 }

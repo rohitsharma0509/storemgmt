@@ -1,6 +1,7 @@
 package com.app.myproject.api;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -10,8 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.myproject.constants.RequestUrls;
@@ -28,7 +28,7 @@ public class CustomerController {
 	@Inject
 	private CommonUtil commonUtil;
 
-	@RequestMapping(value = RequestUrls.CUSTOMERS, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.CUSTOMERS)
 	public String getCustomers(Model model, @RequestParam(required = false) String name,
 			@RequestParam(required = false) String city, @RequestParam(required = false) String mobile,
 			@PageableDefault(page = 1, size = 10) Pageable pageable) {
@@ -44,13 +44,14 @@ public class CustomerController {
 		params.put("mobile", mobile);
 
 		model.addAttribute("customer", customer);
-		model.addAttribute("pagging", commonUtil.getPagging("customers", page.getNumber() + 1, page.getTotalPages(), params));
+		model.addAttribute("pagging",
+				commonUtil.getPagging("customers", page.getNumber() + 1, page.getTotalPages(), params));
 		model.addAttribute("page", page);
 		return "customers";
 	}
-	
-	@RequestMapping(value = RequestUrls.CUSTOMERS+"/ajax", method = RequestMethod.GET)
-	public CustomerDto searchCustomer(@RequestParam String mobile){
+
+	@GetMapping(value = RequestUrls.CUSTOMERS + "/search")
+	public List<CustomerDto> searchCustomer(@RequestParam(required = true) String mobile) {
 		return customerService.searchCustomerByMobile(mobile);
 	}
 }

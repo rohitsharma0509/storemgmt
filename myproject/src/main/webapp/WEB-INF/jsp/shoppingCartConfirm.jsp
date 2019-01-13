@@ -22,6 +22,19 @@
 	    	}
 	    });
   	});
+	$('#mobile').autocomplete({
+	    serviceUrl: '/customers/search',
+	    transformResult: function(customerDtos) {
+	        return {
+	            suggestions: $.map(customerDtos, function(customerDto) {
+	                return { value: customerDto.mobile, data: customerDto.name };
+	            })
+	        };
+	    },
+	    onSelect: function (suggestion) {
+	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+	    }
+	});
 </script>
 <div class="row panel">
 	<div class="col-sm-12" style="height:40px;"><b><a href="${contextPath}/products"><spring:message code="Products" text="Products" /></a></b> >
@@ -58,7 +71,7 @@
 				<div class="row">
 					<div class="col-sm-6">
 						<label for="mobile"><spring:message code="Mobile" text="Mobile" /></label>
-						<form:input type="text" path="mobile" class="form-control input-sm"/>
+						<form:input type="text" path="mobile" id="mobile" class="form-control input-sm"/>
             		</div>
 					<div class="col-sm-6 autofill">
 						<label for="name"><spring:message code="Name" text="Name" /></label>

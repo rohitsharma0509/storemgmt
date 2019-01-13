@@ -25,7 +25,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-sm-12"><input type="submit" value="Search" style="margin-top: 15px;" class="btn btn-sm btn-success form-control"></div>
+						<div class="col-sm-12"><input type="submit" value="Search" style="margin-top: 15px;" class="btn btn-sm btn-info form-control"></div>
 					</div>
 				</div>
 			</div>
@@ -57,7 +57,7 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-4">
-						<a class="btn btn-success btn-sm" href="${contextPath}<%=RequestUrls.ADD_ROLE %>">Add Role</a>
+						<a class="btn btn-info btn-sm" href="${contextPath}<%=RequestUrls.ADD_ROLE %>">Add Role</a>
 					</div>
 					<c:choose>
 						<c:when test="${page.getTotalPages() > 1}">

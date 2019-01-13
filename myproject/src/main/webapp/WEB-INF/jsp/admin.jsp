@@ -16,7 +16,6 @@
 		<table class="table">
 			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Configuration" text="Configuration" /></b></span></th></tr>
 			<tr><td><a href="${contextPath}<%=RequestUrls.CATEGORIES %>"><spring:message code="Category" text="Category" /></a></td></tr>
-			<tr><td><a href="${contextPath}/suppliers"><spring:message code="Suppliers" text="Suppliers" /></a></td></tr>
 			<tr><td><a href="${contextPath}<%=RequestUrls.PRODUCTS %>"><spring:message code="Products" text="Products" /></a></td></tr>
 		</table>
 	</div>

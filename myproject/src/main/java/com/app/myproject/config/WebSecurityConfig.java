@@ -55,8 +55,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		antMatchers("/admin", "/admin/*").access("hasAuthority('ADMIN')").
 		antMatchers("/resources/**", "/registration").permitAll().anyRequest().authenticated()
 		.and().formLogin().loginPage("/login").permitAll().successHandler(authenticationSuccessHandler)
-		.and().exceptionHandling().accessDeniedPage(RequestUrls.ERROR+"/"+HttpStatus.FORBIDDEN)
-		.and().logout().deleteCookies("rememberMe").permitAll()
+		.and().exceptionHandling().accessDeniedPage(RequestUrls.ERROR+"/"+HttpStatus.FORBIDDEN.value())
+		.and().logout().invalidateHttpSession(true).deleteCookies("rememberMe").permitAll()
 		.and().rememberMe().tokenValiditySeconds(5);
 	}
 

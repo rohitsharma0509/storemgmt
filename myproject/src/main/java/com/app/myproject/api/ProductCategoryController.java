@@ -11,8 +11,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,7 +40,7 @@ public class ProductCategoryController {
 	@Inject
 	private ProductCategoryValidator productCategoryValidator;
 	
-	@RequestMapping(value = RequestUrls.ADD_CATEGORY,method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ADD_CATEGORY)
 	public String addCategory(Model model, @RequestParam(value = FieldNames.ID, required=false) Long id) {
 		ProductCategory productCategory;
 		if(id != null){
@@ -48,7 +52,7 @@ public class ProductCategoryController {
 		return RequestUrls.ADD_CATEGORY;
 	}
 	
-	@RequestMapping(value = RequestUrls.CATEGORIES, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.CATEGORIES)
 	public String addCategory(Model model, @Valid ProductCategory productCategory, BindingResult bindingResult) {
 		productCategoryValidator.validate(productCategory, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -59,7 +63,7 @@ public class ProductCategoryController {
 		return "redirect:"+RequestUrls.CATEGORIES;
 	}
 	
-	@RequestMapping(value = RequestUrls.CATEGORIES, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.CATEGORIES)
 	public String getCategories(Model model, @PageableDefault(page=1, size=10) Pageable pageable) {
 		Page<ProductCategory> page = productCategoryService.getCategories(pageable);
 		model.addAttribute(FieldNames.PAGGING, commonUtil.getPagging(RequestUrls.CATEGORIES, page.getNumber()+1, page.getTotalPages(), null));
@@ -67,20 +71,20 @@ public class ProductCategoryController {
 		return RequestUrls.CATEGORIES;
 	}
 	
-	@RequestMapping(value = RequestUrls.CATEGORIES_ALL,method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.CATEGORIES_ALL)
 	public String getAllCategories(Model model) {
 		List<ProductCategory> categories = productCategoryService.getAllCategories();
 		model.addAttribute(FieldNames.CATEGORIES, categories);
 		return RequestUrls.CATEGORIES;
 	}
 	
-	@RequestMapping(value = RequestUrls.DELETE_CATEGORY, method = RequestMethod.DELETE)
+	@DeleteMapping(value = RequestUrls.DELETE_CATEGORY)
 	public String deleteCategory(Model model, @PathVariable(FieldNames.ID) Long id) {
 		productCategoryService.deleteCategory(id);
 		return RequestUrls.CATEGORIES;
 	}
 	
-	@RequestMapping(value = RequestUrls.CATEGORIES, method = RequestMethod.PUT)
+	@PutMapping(value = RequestUrls.CATEGORIES)
 	public String editCategory(Model model, @ModelAttribute(FieldNames.PRODUCT_CATEGORY) ProductCategory productCategory) {
 		productCategoryService.editCategory(productCategory);
 		return RequestUrls.CATEGORIES;

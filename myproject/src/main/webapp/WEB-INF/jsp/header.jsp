@@ -19,12 +19,18 @@ response.setCharacterEncoding("UTF-8");
 <meta name="author" content="">
 <title>My Project</title>
 <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
+<link href="${contextPath}/resources/css/font-awesome.min.css" rel="stylesheet">
 <script src="${contextPath}/resources/js/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/popper.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
-<script src="${contextPath}/resources/js/c560c025cf.js"></script>
+<!-- <script src="${contextPath}/resources/js/c560c025cf.js"></script> -->
 
 <script>
+	function openModal(url) {
+		$('.modal-body').load(url, function(){
+		    $('#myModal').modal({show:true});
+		});
+	}
 	function callAjax(method, baseUrl) {
 		$.ajax({
 		    type: method,
@@ -127,6 +133,9 @@ response.setCharacterEncoding("UTF-8");
 	color: #84d5ff;
 	font-weight: bold;
 }
+.modal-dialog {
+	max-width: 800px;
+}
 </style>
 </head>
 <body>
@@ -165,7 +174,7 @@ response.setCharacterEncoding("UTF-8");
 						menuMap.put("Stock", "stock");
 						menuMap.put("Orders", "orders");
 						menuMap.put("Customers", "customers");
-						menuMap.put("Profit & Loss", "dailyProfitLoss");
+						menuMap.put("Profit & Loss", "profitLoss");
 						
 						for (java.util.Map.Entry<String, String> entry : menuMap.entrySet()){
 							if(null == request.getParameter("selectedNav") && "Dashboard".equalsIgnoreCase(entry.getKey())) {%>

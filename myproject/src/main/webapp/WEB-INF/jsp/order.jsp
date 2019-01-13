@@ -72,7 +72,7 @@
 		<div class="card-footer">
 			<div class="row">
 	        	<div class="col-sm-10 text-center"></div>
-	        	<div class="col-sm-2 text-center"><a href="${contextPath}/orders/download/${orderDto.id}" class="btn btn-sm btn-success"> <spring:message code="Download" text="Download" /></a></div>
+	        	<div class="col-sm-2 text-center"><a href="${contextPath}/orders/download/${orderDto.id}" class="btn btn-sm btn-info"> <spring:message code="Download" text="Download" /></a></div>
 	        </div>
 		</div>
 	</div>

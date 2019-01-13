@@ -1,5 +1,7 @@
 package com.app.myproject.service.impl;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.data.domain.Example;
@@ -44,8 +46,8 @@ public class CustomerServiceImpl implements CustomerService{
 	}
 
 	@Override
-	public CustomerDto searchCustomerByMobile(String mobile) {
-		return orderMapper.customerToCustomerDto(customerRepository.findByMobile(mobile));
+	public List<CustomerDto> searchCustomerByMobile(String mobile) {
+		return orderMapper.customersToCustomerDtos(customerRepository.findByMobileContaining(mobile));
 	}
 
 }

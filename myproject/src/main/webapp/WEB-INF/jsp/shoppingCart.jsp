@@ -215,7 +215,7 @@ $(document).ready(function() {
      	<c:if test="${shoppingCart.getProductDtos().size() > 0}">
      	<div class="card-footer">
 	         <div class="pull-right" style="margin: 10px">
-	         	 <button type="submit" class="btn btn-success pull-right"> <spring:message code="Checkout" text="Checkout" /></button>
+	         	 <button type="submit" class="btn btn-info pull-right"> <spring:message code="Checkout" text="Checkout" /></button>
 	             <div class="pull-right" style="margin: 5px">
 	                 <spring:message code="Total price" text="Total price" />: <b id="totalPriceLabel">${shoppingCart.totalPrice}</b>
 	             </div>

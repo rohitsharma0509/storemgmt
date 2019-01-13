@@ -2,26 +2,27 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <div class="row" style="height: 20px;"></div>
+<%
+System.out.println("loading html");
+%>
 <div class="row">
 	<div class="col-sm-3">
-		<form method="GET" class="form-horizontal" name="dailyForm" onsubmit="submitForm(this, 'tab1')">
+		<form method="GET" class="form-horizontal" name="monthlyForm" onsubmit="submitForm(this, 'tab2')">
 			<div class="card">
 				<div class="card-body main-center">
 					<div class="row">
 						<div class="col-sm-12">
-							<label for="fromDate" class="control-label text-right"><spring:message code="From Date" text="From Date" /></label> 
-							<input type="date" id="fromDate" name="fromDate" value="${param.fromDate}" class="form-control input-sm" />
+							<label for="month" class="control-label text-right">Month</label>${months}
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
-							<label for="toDate"><spring:message code="To Date" text="To Date" /></label> 
-							<input type="date" id="toDate" name="toDate" value="${param.toDate}" class="form-control input-sm" />
+							<label for="month" class="control-label text-right">Year</label>${years}
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
-							<input type="submit" value="<spring:message code="Search" text="Search" />" style="margin-top: 15px;" class="btn btn-sm btn-info form-control">
+							<input type="submit" value="Search" style="margin-top: 15px;" class="btn btn-sm btn-info form-control">
 						</div>
 					</div>
 				</div>
@@ -35,11 +36,11 @@
 					<div class="col-sm-12">
 						<table class="table content-table">
 							<tr>
-								<th><spring:message code="Date" text="Date" /></th>
-								<th><spring:message code="No of Orders" text="No of Orders" /></th>
-								<th><spring:message code="Sold Quantity" text="Sold Quantity" /></th>
-								<th><spring:message code="Amount Received" text="Amount Received" /></th>
-								<th><spring:message code="Profit / Loss" text="Profit / Loss" /></th>
+								<th>Month</th>
+								<th>No of Orders</th>
+								<th>Sold Quantity</th>
+								<th>Amount Received</th>
+								<th>Profit / Loss</th>
 							</tr>
 							<c:forEach var="profitLossDto" items="${page.getContent()}">
 								<tr>
@@ -63,7 +64,7 @@
 			</c:when>
 			<c:otherwise>
 				<div class="row">
-					<div class="col-sm-12"><spring:message code="No Records Found" text="No Records Found" />.</div>
+					<div class="col-sm-12">No Records Found.</div>
 				</div>
 			</c:otherwise>
 		</c:choose>

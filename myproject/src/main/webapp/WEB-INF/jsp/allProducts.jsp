@@ -96,7 +96,7 @@ function getProductList(){
 			</div>
 			<div class="row">
 				<div class="col-sm-1">
-					<input type="submit" value="<spring:message code="Search" text="Search" />" style="margin-top: 15px;" class="btn btn-sm btn-success form-control">
+					<input type="submit" value="<spring:message code="Search" text="Search" />" style="margin-top: 15px;" class="btn btn-sm btn-info form-control">
 				</div>
 				<div class="col-sm-11"></div>
 			</div>

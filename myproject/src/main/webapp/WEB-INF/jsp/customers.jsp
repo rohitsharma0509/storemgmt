@@ -35,7 +35,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
-							<input type="submit" value="<spring:message code="Search" text="Search" />" style="margin-top: 15px;" class="btn btn-sm btn-success form-control">
+							<input type="submit" value="<spring:message code="Search" text="Search" />" style="margin-top: 15px;" class="btn btn-sm btn-info form-control">
 						</div>
 					</div>
 				</div>
@@ -69,7 +69,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-1"><a class="btn btn-success btn-sm" href="${contextPath}/excel?reportName=<%=Constants.CUSTOMERS%>"><spring:message code="Export as Excel" text="Export as Excel" /></a></div>
+					<div class="col-sm-1"><a class="btn btn-info btn-sm" href="${contextPath}/excel?reportName=<%=Constants.CUSTOMERS%>"><spring:message code="Export as Excel" text="Export as Excel" /></a></div>
 					<c:choose>
 						<c:when test="${page.getTotalPages() > 1}">
 							<div class="col-sm-11">${pagging}</div>
