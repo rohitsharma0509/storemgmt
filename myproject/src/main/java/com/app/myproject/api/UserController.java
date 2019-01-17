@@ -17,10 +17,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.app.myproject.constants.FieldNames;
 import com.app.myproject.constants.RequestUrls;
@@ -59,13 +59,13 @@ public class UserController {
 	@Inject
 	private Environment environment;
 
-	@RequestMapping(value = RequestUrls.REGISTRATION, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.REGISTRATION)
 	public String registration(Model model) {
 		model.addAttribute("userForm", new User());
 		return RequestUrls.REGISTRATION;
 	}
 
-	@RequestMapping(value = RequestUrls.REGISTRATION, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.REGISTRATION)
 	public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
 		userValidator.validate(userForm, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -76,7 +76,7 @@ public class UserController {
 		return "redirect:"+RequestUrls.HOME;
 	}
 
-	@RequestMapping(value = RequestUrls.LOGIN, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.LOGIN)
 	public String login(Model model, String error, String logout) {
 		if (error != null) {
 			model.addAttribute("error", "Your username or password is invalid.");
@@ -86,7 +86,7 @@ public class UserController {
 		return RequestUrls.LOGIN;
 	}
 
-	@RequestMapping(value = { "/", RequestUrls.HOME }, method = RequestMethod.GET)
+	@GetMapping(value = { "/", RequestUrls.HOME })
 	public String home(Model model) {
 		Long totalProducts = productService.getNumberOfProducts();
 		Long outOfStockProduct = productService.getOutOfStockProductQuantity();
@@ -103,7 +103,7 @@ public class UserController {
 		return RequestUrls.HOME;
 	}
 
-	@RequestMapping(value = RequestUrls.USERS, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.USERS)
 	public String getUsers(Model model, @PageableDefault(page=1, size=10) Pageable pageable) {
 		Page<User> page = userService.getUsers(pageable);
 		model.addAttribute(FieldNames.PAGGING, commonUtil.getPagging(RequestUrls.USERS, page.getNumber()+1, page.getTotalPages(), null));
@@ -112,14 +112,14 @@ public class UserController {
 	}
 	
 	@Transactional
-	@RequestMapping(value = RequestUrls.USERS, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.USERS)
 	public String editUser(Model model, @ModelAttribute("user") User user, HttpServletRequest request, HttpServletResponse response) {
 		userService.update(user);
 		userService.updateLocale(request, response, user.getLanguage());
 		return RequestUrls.MY_ACCOUNT;
 	}
 	
-	@RequestMapping(value = RequestUrls.PERSONAL_INFO, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.PERSONAL_INFO)
 	public String getUser(Model model) {
 		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.findByUsername(username);
@@ -132,7 +132,7 @@ public class UserController {
 		return RequestUrls.PERSONAL_INFO;
 	}
 	
-	@RequestMapping(value = RequestUrls.MY_ACCOUNT, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.MY_ACCOUNT)
 	public String myAccount(Model model) {
 		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		User user = userService.findByUsername(username);
@@ -140,7 +140,7 @@ public class UserController {
 		return RequestUrls.MY_ACCOUNT;
 	}
 	
-	@RequestMapping(value = RequestUrls.ERROR+"/{code}", method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ERROR+"/{code}")
 	public String showError(Model model, @PathVariable(FieldNames.CODE) Integer code) {
 		model.addAttribute(FieldNames.CODE, code);
 		model.addAttribute(FieldNames.MESSAGE, environment.getProperty(String.valueOf(code)));

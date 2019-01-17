@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.myproject.constants.RequestUrls;
@@ -31,7 +32,7 @@ public class ShoppingCartController {
 	@Inject
 	private ProductService productService;
 	
-	@RequestMapping(value = RequestUrls.ADD_TO_CART, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ADD_TO_CART)
 	public String addToCart(Model model, HttpServletRequest request, @RequestParam(value = "id", required=true) Long id) {
 		ShoppingCart shoppingCart = shoppingCartService.getShoppingCart(request);
 		Optional<ProductDto> optionalProductDto = shoppingCart.getProductDtos().stream().filter(productDto -> productDto.getId()==id).findFirst();
@@ -58,7 +59,7 @@ public class ShoppingCartController {
 		return "redirect:shoppingCart";
 	}
 	
-	@RequestMapping(value = RequestUrls.DELETE_FROM_CART, method = RequestMethod.DELETE)
+	@DeleteMapping(value = RequestUrls.DELETE_FROM_CART)
 	public String removeFromCart(Model model, HttpServletRequest request, @PathVariable(value = "id") Long id) {
 		ShoppingCart shoppingCart = shoppingCartService.getShoppingCart(request);
 		
@@ -79,14 +80,14 @@ public class ShoppingCartController {
 		return "shoppingCart";
 	}
 	
-	@RequestMapping(value = RequestUrls.SHOPPING_CART, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.SHOPPING_CART)
 	public String getShoppingCart(Model model, HttpServletRequest request) {
 		ShoppingCart shoppingCart = shoppingCartService.getShoppingCart(request);
 		model.addAttribute("shoppingCart", shoppingCart);
 		return "shoppingCart";
 	}
 	
-	@RequestMapping(value = RequestUrls.CHECKOUT, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.CHECKOUT)
 	public String checkout(Model model, HttpServletRequest request, @RequestParam(value = "id", required=false) Long id) {
 		if(null == id){
 			ShoppingCart shoppingCart = shoppingCartService.getShoppingCart(request);
@@ -103,7 +104,7 @@ public class ShoppingCartController {
 		return "shoppingCartConfirm";
 	}
 	
-	@RequestMapping(value = RequestUrls.SHOPPING_CART,method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.SHOPPING_CART)
 	public String updateShoppingCart(Model model, @ModelAttribute ShoppingCart shoppingCart, HttpServletRequest request) {
 		model.addAttribute("shoppingCart", shoppingCartService.updateShoppingCart(request, shoppingCart));
 		return "redirect:checkout";

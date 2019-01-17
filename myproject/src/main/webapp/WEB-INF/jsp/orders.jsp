@@ -34,7 +34,7 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
-							<button type="submit" style="margin-top: 15px;" class="btn btn-sm btn-success form-control"><spring:message code="Search" text="Search" /></button>
+							<button type="submit" style="margin-top: 15px;" class="btn btn-sm btn-info form-control"><spring:message code="Search" text="Search" /></button>
 						</div>
 					</div>
 				</div>
@@ -55,6 +55,7 @@
 							<c:forEach var="order" items="${page.getContent()}"
 								varStatus="loop">
 								<tr>
+									<!-- <td><a onclick="openModal('${contextPath}/orders/${order.id}')" href="#">${order.orderNumber}</a></td> -->
 									<td><a href="${contextPath}/orders/${order.id}">${order.orderNumber}</a></td>
 									<td>${order.orderDate}</td>
 									<td>${order.totalAmount}</td>
@@ -64,7 +65,7 @@
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-sm-1"><a class="btn btn-success btn-sm" href="${contextPath}/excel?reportName=<%=Constants.ORDERS%>"><spring:message code="Export as Excel" text="Export as Excel" /></a></div>
+					<div class="col-sm-1"><a class="btn btn-info btn-sm" href="${contextPath}/excel?reportName=<%=Constants.ORDERS%>"><spring:message code="Export as Excel" text="Export as Excel" /></a></div>
 					<c:choose>
 						<c:when test="${page.getTotalPages() > 1}">
 							<div class="col-sm-11">${pagging}</div>
@@ -74,6 +75,23 @@
 			</c:when>
 			<c:otherwise><spring:message code="No Records Found" text="No Records Found" />.</c:otherwise>
 		</c:choose>
+	</div>
+</div>
+<div class="row">
+	<div class="modal fade" id="myModal" role="dialog">
+	    <div class="modal-dialog">
+	        <!-- Modal content-->
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h4 class="modal-title">Order details</h4>
+	                <button type="button" class="close" data-dismiss="modal">&times;</button>
+	            </div>
+	            <div class="modal-body"></div>
+	            <div class="modal-footer">
+	                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	            </div>
+	        </div>
+	    </div>
 	</div>
 </div>
 <jsp:include page="footer.jsp"></jsp:include>

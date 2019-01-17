@@ -19,11 +19,10 @@ response.setCharacterEncoding("UTF-8");
 <meta name="author" content="">
 <title>My Project</title>
 <link href="${contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
-<link href="${contextPath}/resources/css/font-awesome.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 <script src="${contextPath}/resources/js/jquery.min.js"></script>
 <script src="${contextPath}/resources/js/popper.min.js"></script>
 <script src="${contextPath}/resources/js/bootstrap.min.js"></script>
-<!-- <script src="${contextPath}/resources/js/c560c025cf.js"></script> -->
 
 <script>
 	function openModal(url) {

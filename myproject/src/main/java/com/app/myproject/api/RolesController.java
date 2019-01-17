@@ -9,8 +9,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.myproject.constants.FieldNames;
@@ -31,7 +31,7 @@ public class RolesController {
 	@Inject
 	private RoleValidator roleValidator;
 	
-	@RequestMapping(value = RequestUrls.ROLES, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ROLES)
     public String getRoles(Model model, @PageableDefault(page=1, size=10) Pageable pageable) {
 		Page<Role> page = roleService.getRoles(pageable);
 		model.addAttribute(FieldNames.PAGGING, commonUtil.getPagging(RequestUrls.ROLES, page.getNumber()+1, page.getTotalPages(), null));
@@ -39,7 +39,7 @@ public class RolesController {
         return RequestUrls.ROLES;
     }
 	
-	@RequestMapping(value = RequestUrls.ROLES, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.ROLES)
 	public String addCategory(Model model, @Valid Role role, BindingResult bindingResult) {
 		roleValidator.validate(role, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -50,7 +50,7 @@ public class RolesController {
 		return "redirect:"+RequestUrls.ROLES;
 	}
 	
-	@RequestMapping(value = RequestUrls.ADD_ROLE, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.ADD_ROLE)
 	public String addRole(Model model, @RequestParam(value = FieldNames.ID, required=false) Long id) {
 		Role role;
 		if(id != null){

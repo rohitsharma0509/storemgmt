@@ -14,10 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.myproject.constants.RequestUrls;
@@ -47,7 +47,7 @@ public class OrderController {
 	@Inject
 	private CommonUtil commonUtil;
 	
-	@RequestMapping(value = RequestUrls.BUY, method = RequestMethod.POST)
+	@PostMapping(value = RequestUrls.BUY)
 	public String buyNow(@ModelAttribute("customer") @Valid CustomerDto customerDto,
 			HttpServletRequest request, @RequestParam(value = "productId", required=false) Long id) {
 		OrderDto orderDto;
@@ -65,14 +65,14 @@ public class OrderController {
 		return "redirect:orders/" + orderDto.getId();
 	}
 	
-	@RequestMapping(value = RequestUrls.GET_ORDERS, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.GET_ORDERS)
 	public String getOrder(Model model, @PathVariable(value = "id") Long id) {
 		OrderDto orderDto = orderService.getOrder(id);
 		model.addAttribute("orderDto", orderDto);
 		return "order";
 	}
 	
-	@RequestMapping(value =RequestUrls.ORDERS, method = RequestMethod.GET)
+	@GetMapping(value =RequestUrls.ORDERS)
 	public String searchOrders(Model model, @ModelAttribute("order") Order order, @PageableDefault(page = 1, size = 10) Pageable pageable) {
 		CustomPage<OrderDto> page = orderService.searchOrders(order, pageable);
 		model.addAttribute("order", order);
@@ -81,7 +81,7 @@ public class OrderController {
 		return "orders";	
 	}
 	
-	@RequestMapping(value = RequestUrls.DOWNLOAD_ORDER, method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.DOWNLOAD_ORDER)
 	public void downloadOrder(Model model, HttpServletResponse response,
 			@PathVariable(value = "id") Long id) throws IOException {
 		response.setContentType("application/pdf");

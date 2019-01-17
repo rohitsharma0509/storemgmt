@@ -9,8 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.app.myproject.constants.RequestUrls;
@@ -32,7 +31,7 @@ public class StockController {
 	@Inject
 	private CommonUtil commonUtil;
 	
-	@RequestMapping(value = RequestUrls.STOCK,method = RequestMethod.GET)
+	@GetMapping(value = RequestUrls.STOCK)
 	public String getStock(Model model,
 			@RequestParam(required = false) String categoryId,
 			@RequestParam(required = false) String brandName,
