@@ -54,14 +54,37 @@ response.setCharacterEncoding("UTF-8");
 		    dataType: "json",
 		    headers: {"X-CSRF-TOKEN": $("input[name='_csrf']").val()},
 		    success: function(response) {
-		    	$(this).closest("tr").remove();
-		        console.log(response);
+		    	window.location.reload();
 		    },
 		    error: function(response) {
 		        console.log(response);
 		    }
 		});		
 	}
+	$(function(){
+	    $('[rel="moreActions"]').popover({
+	        container: 'body',
+	        html: true,
+	        content: function () {
+	            var clone = $($(this).data('popover-content')).clone(true).removeClass('d-none');
+	            return clone;
+	        }
+	    }).click(function(e) {
+	        e.preventDefault();
+	    });
+		$("#all").change(function() {
+			$(".checkbox").prop("checked", $(this).prop("checked"));
+		});
+		$(".checkbox").change(function() {
+			if(false==$(this).prop("checked")){
+				$("#all").prop("checked", false);
+			}
+			if($(".checkbox:checked").length == $(".checkbox").length) {
+				$("#all").prop("checked", true);
+			}
+		});
+	});
+	
 	</script>
 
 <style>

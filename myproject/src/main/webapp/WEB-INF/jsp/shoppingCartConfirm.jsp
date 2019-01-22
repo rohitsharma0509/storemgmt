@@ -1,3 +1,4 @@
+<%@page import="com.app.myproject.constants.RequestUrls"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>    
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -6,10 +7,54 @@
 </jsp:include>
 <link href="${contextPath}/resources/css/bootstrap-toggle.min.css" rel="stylesheet">
 <script src="${contextPath}/resources/js/bootstrap-toggle.min.js"></script>
+<script src="${contextPath}/resources\js\custom-autocompleter.js"></script>
 
 <style>
 .toggle-handle {
 	background-color: #b3cbb8;  
+}
+.address {
+	font-size: 13px;
+	padding-top: 25px;
+}
+* {
+  box-sizing: border-box;
+}
+
+/*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 100%;
+  left: 15px;
+  right: 15px;
+}
+
+.autocomplete-items div {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
 }
 </style>
 <script>
@@ -17,24 +62,16 @@
 	    $('#isCustomerExist').change(function() {
 	    	if($(this).prop('checked')){
 	    		$(".autofill").hide();
+	    		$(".searchByMobileOrName").removeClass('d-none');
+	    		$(".address").removeClass('d-none');
 	    	} else {
 	    		$(".autofill").show();
+	    		$(".searchByMobileOrName").addClass('d-none');
+	    		$(".address").addClass('d-none');
+	    		$(".autofill > input").val("");
 	    	}
 	    });
   	});
-	$('#mobile').autocomplete({
-	    serviceUrl: '/customers/search',
-	    transformResult: function(customerDtos) {
-	        return {
-	            suggestions: $.map(customerDtos, function(customerDto) {
-	                return { value: customerDto.mobile, data: customerDto.name };
-	            })
-	        };
-	    },
-	    onSelect: function (suggestion) {
-	        alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-	    }
-	});
 </script>
 <div class="row panel">
 	<div class="col-sm-12" style="height:40px;"><b><a href="${contextPath}/products"><spring:message code="Products" text="Products" /></a></b> >
@@ -50,7 +87,7 @@
 	</div>
 </div>
 <div class="row" style="height:10px;"></div>
-<form:form method="POST" modelAttribute="customerDto" class="form-horizontal" enctype="multipart/form-data" action="<%=action %>">
+<form:form method="POST" modelAttribute="customerDto" id="customerForm" class="form-horizontal" enctype="multipart/form-data" action="<%=action %>">
 <div class="row">
 	<div class="col-sm-6">
 		<div class="card">
@@ -68,12 +105,13 @@
 		    		</div>
 		    	</div>
 		    	<hr>
-				<div class="row">
+				<div class="row autofill">
 					<div class="col-sm-6">
+						<form:hidden path="id"  class="form-control input-sm"/>
 						<label for="mobile"><spring:message code="Mobile" text="Mobile" /></label>
 						<form:input type="text" path="mobile" id="mobile" class="form-control input-sm"/>
             		</div>
-					<div class="col-sm-6 autofill">
+					<div class="col-sm-6">
 						<label for="name"><spring:message code="Name" text="Name" /></label>
             			<form:input type="text" path="name" class="form-control input-sm"/>
             		</div>
@@ -107,6 +145,16 @@
 						<label for="email"><spring:message code="Email" text="Email" /></label>
             			<form:input type="text" path="email" class="form-control input-sm"/>
             		</div>
+				</div>
+				<div class="row d-none searchByMobileOrName">
+					<div class="col-sm-8">
+						<label for="mobileOrName"><spring:message code="Search by Name or Mobile" text="Search by Name or Mobile" /></label>
+						<input type="text" id="mobileOrName" onkeyup="getCustomers(this, '${contextPath}/customers/search')" class="form-control input-sm"/>
+					</div>
+					<div class="col-sm-4"></div>
+				</div>
+				<div class="row d-none address">
+					<div class="col-sm-12"></div>
 				</div>
 			</div>
 		</div>

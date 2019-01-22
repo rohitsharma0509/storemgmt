@@ -34,7 +34,7 @@ public class Order {
 	@Column(name = "order_date", columnDefinition="timestamp")
 	private ZonedDateTime orderDate;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "customer_id")
 	private Customer customer;
 	

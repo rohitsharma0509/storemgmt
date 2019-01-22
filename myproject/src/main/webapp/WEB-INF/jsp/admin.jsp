@@ -9,18 +9,23 @@
 		<table class="table">
 			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Users" text="Users" /></b></span></th></tr>
 			<tr><td><a href="${contextPath}<%=RequestUrls.USERS %>"><spring:message code="Users" text="Users" /></a></td></tr>
-			<tr><td><a href="${contextPath}<%=RequestUrls.ROLES %>"><spring:message code="Roles" text="Roles" /></a></td></tr>
 		</table>
 	</div>
 	<div class="col-sm-6">
 		<table class="table">
-			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Configuration" text="Configuration" /></b></span></th></tr>
-			<tr><td><a href="${contextPath}<%=RequestUrls.CATEGORIES %>"><spring:message code="Category" text="Category" /></a></td></tr>
-			<tr><td><a href="${contextPath}<%=RequestUrls.PRODUCTS %>"><spring:message code="Products" text="Products" /></a></td></tr>
+			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Access Control" text="Access Control" /></b></span></th></tr>
+			<tr><td><a href="${contextPath}<%=RequestUrls.ROLES %>"><spring:message code="Roles" text="Roles" /></a></td></tr>
 		</table>
 	</div>
 </div>
 <div class="row">
+	<div class="col-sm-6">
+		<table class="table">
+			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Manage Categories & Products" text="Manage Categories & Products" /></b></span></th></tr>
+			<tr><td><a href="${contextPath}<%=RequestUrls.CATEGORIES %>"><spring:message code="Category" text="Category" /></a></td></tr>
+			<tr><td><a href="${contextPath}<%=RequestUrls.PRODUCTS %>"><spring:message code="Products" text="Products" /></a></td></tr>
+		</table>
+	</div>
 	<div class="col-sm-6">
 		<table class="table">
 			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Email" text="Email" /></b></span></th></tr>
@@ -29,7 +34,6 @@
 			<tr><td><a href="${contextPath}/composeEmail"><spring:message code="Send Email" text="Send Email" /></a></td></tr>
 		</table>
 	</div>
-	<div class="col-sm-6"></div>
 </div>
 <div class="row" style="height: 100px;"></div>
 <jsp:include page="footer.jsp"></jsp:include>

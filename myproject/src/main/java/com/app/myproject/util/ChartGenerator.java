@@ -1,6 +1,7 @@
 package com.app.myproject.util;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,9 +22,16 @@ import javax.persistence.Tuple;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.CombinedDomainCategoryPlot;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.stereotype.Component;
@@ -51,14 +59,15 @@ public class ChartGenerator {
 
 			JFreeChart chart = ChartFactory.createPieChart("Stock Status",
 					dataset, true, true, false);
-			chart.setBackgroundPaint(Color.WHITE);
-			chart.setBorderPaint(Color.WHITE);
+			Color color = new Color(222,226,230);
+			chart.setBackgroundPaint(color);
+			chart.setBorderPaint(color);
 			PiePlot plot = (PiePlot) chart.getPlot();
-			plot.setBackgroundPaint(Color.WHITE);
+			plot.setBackgroundPaint(color);
 			plot.setSectionPaint("Non-Alert", Color.GREEN);
 			plot.setSectionPaint("Alert", Color.YELLOW);
 			plot.setSectionPaint("Out Of Stock", Color.RED);
-			plot.setOutlinePaint(Color.WHITE);
+			plot.setOutlinePaint(color);
 
 			BufferedImage bufferedImage = chart.createBufferedImage(500, 500);
 			ImageIO.write(bufferedImage, "png", buffer);
@@ -101,10 +110,12 @@ public class ChartGenerator {
 			JFreeChart lineChart = ChartFactory.createLineChart("Last 5 Days Sales",
 					"Dates", "Sales", dataset1, PlotOrientation.VERTICAL, true,
 					true, false);
+			Color color = new Color(222,226,230);
+			lineChart.setBackgroundPaint(color);
+			lineChart.setBorderPaint(color);
 			Plot plot = lineChart.getPlot();
-			plot.setBackgroundPaint(Color.WHITE);
-			plot.setOutlinePaint(Color.WHITE);
-			
+			plot.setBackgroundPaint(color);
+			plot.setOutlinePaint(color);
 			
 			BufferedImage bufferedImage = lineChart.createBufferedImage(500,
 					500);
@@ -119,13 +130,7 @@ public class ChartGenerator {
 	public byte[] createBarChart() {
 		ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 		try {
-			List<SearchCriteria> criterias = new ArrayList<>();
-			criterias.add(new SearchCriteria("year", Calendar.getInstance().get(Calendar.YEAR), Constants.EQUALS));
-			Map<Integer, Double> salesMap = new HashMap<>();
-			List<Tuple> tuples = queryBuilder.getTupleByQuery("select month(o.order_date) month, sum(od.quantity) soldQty, sum(p.per_product_price*od.quantity) amountReceived, sum(od.quantity*p.per_product_price-od.quantity*p.purchase_price) profit from orders o left join order_details od on o.order_id=od.order_id left join products p on od.product_id=p.product_id where year(o.order_date)= :year group by month(o.order_date), year(o.order_date)", criterias);
-			for(Tuple tuple : tuples){ 
-				salesMap.put(Integer.parseInt(String.valueOf(tuple.get("month"))), Double.parseDouble(String.valueOf(tuple.get("amountReceived"))));
-			}
+			Map<Integer, Double> salesMap = getSalesMapByYear(Calendar.getInstance().get(Calendar.YEAR));
 			DefaultCategoryDataset dataset2 = new DefaultCategoryDataset();
 			for(Month month : Month.values()){
 				if(salesMap.containsKey(month.getValue())){
@@ -135,9 +140,13 @@ public class ChartGenerator {
 				}
 			}
 			JFreeChart barChart = ChartFactory.createBarChart("Monthly Sales", "Month", "Sales", dataset2, PlotOrientation.VERTICAL, true, true, false);
+			Color color = new Color(222,226,230);
+			barChart.setBackgroundPaint(color);
+			barChart.setBorderPaint(color);
 			Plot plot = barChart.getPlot();
-			plot.setBackgroundPaint(Color.WHITE);
-			plot.setOutlinePaint(Color.WHITE);
+			plot.setBackgroundPaint(color);
+			plot.setOutlinePaint(color);
+			
 			
 			BufferedImage bufferedImage = barChart.createBufferedImage(500, 500);
 			ImageIO.write(bufferedImage, "png", buffer);
@@ -145,5 +154,72 @@ public class ChartGenerator {
 			e.printStackTrace();
 		}
 		return buffer.toByteArray();
+	}
+	
+	public Map<Integer, Double> getSalesMapByYear(int year) {
+	    List<SearchCriteria> criterias = new ArrayList<>();
+        criterias.add(new SearchCriteria("year", year, Constants.EQUALS));
+        Map<Integer, Double> salesMap = new HashMap<>();
+        List<Tuple> tuples = queryBuilder.getTupleByQuery("select month(o.order_date) month, sum(od.quantity) soldQty, sum(p.per_product_price*od.quantity) amountReceived, sum(od.quantity*p.per_product_price-od.quantity*p.purchase_price) profit from orders o left join order_details od on o.order_id=od.order_id left join products p on od.product_id=p.product_id where year(o.order_date)= :year group by month(o.order_date), year(o.order_date)", criterias);
+        for(Tuple tuple : tuples){ 
+            salesMap.put(Integer.parseInt(String.valueOf(tuple.get("month"))), Double.parseDouble(String.valueOf(tuple.get("amountReceived"))));
+        }
+        return salesMap;
+	}
+	
+	public byte[] createCategoryChart() {
+	       ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+	        try {
+	            Integer currentYear = Calendar.getInstance().get(Calendar.YEAR);
+	            Integer lastYear = currentYear-1;
+	            String series1 = currentYear.toString();
+	            String series2 = lastYear.toString();
+	            
+	            Map<Integer, Double> currentYearSalesMap = getSalesMapByYear(currentYear);
+	            Map<Integer, Double> lastYearSalesMap = getSalesMapByYear(lastYear);
+	            
+	            DefaultCategoryDataset dataset1 = new DefaultCategoryDataset();
+	            
+	            for(Month month : Month.values()){
+	                if(currentYearSalesMap.containsKey(month.getValue())){
+	                    dataset1.addValue(currentYearSalesMap.get(month.getValue()), series1, month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+	                }else {
+	                    dataset1.addValue(0, series1, month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+	                }
+	                
+                    if(lastYearSalesMap.containsKey(month.getValue())){
+                        dataset1.addValue(lastYearSalesMap.get(month.getValue()), series2, month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+                    }else {
+                        dataset1.addValue(0, series2, month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));
+                    }
+	            }
+                
+	            NumberAxis rangeAxis1 = new NumberAxis("Sales");
+	            rangeAxis1.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	            LineAndShapeRenderer renderer1 = new LineAndShapeRenderer();
+	            renderer1.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
+	            CategoryPlot subplot1 = new CategoryPlot(dataset1, null, rangeAxis1, renderer1);
+	            subplot1.setDomainGridlinesVisible(true);
+
+	            NumberAxis rangeAxis2 = new NumberAxis("Sales");
+	            rangeAxis2.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
+	            BarRenderer renderer2 = new BarRenderer();
+	            renderer2.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator());
+	            CategoryPlot subplot2 = new CategoryPlot(dataset1, null, rangeAxis2, renderer2);
+	            subplot2.setDomainGridlinesVisible(true);
+
+	            CategoryAxis domainAxis = new CategoryAxis("Year");
+	            CombinedDomainCategoryPlot plot = new CombinedDomainCategoryPlot(domainAxis);
+	            plot.add(subplot1, 2);
+	            plot.add(subplot2, 1);
+	            
+	            JFreeChart chart = new JFreeChart("Sales Comparision between "+lastYear+ " and "+currentYear, new Font("SansSerif", Font.BOLD, 12), plot, true);
+	            
+	            BufferedImage bufferedImage = chart.createBufferedImage(1200, 500);
+	            ImageIO.write(bufferedImage, "png", buffer);
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        }
+	        return buffer.toByteArray();
 	}
 }
