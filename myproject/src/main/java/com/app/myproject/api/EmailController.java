@@ -53,9 +53,4 @@ public class EmailController {
 		emailService.addEmailAccount(emailAccount);
 		return "redirect:/getEmailAccount";
 	}
-	
-	@GetMapping(value = RequestUrls.EMAIL_TEMPLATES)
-	public String getEmailTemplates() {
-		return "admin/emailTemplates";
-	}
 }

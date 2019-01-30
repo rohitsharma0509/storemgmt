@@ -28,6 +28,7 @@ public class RequestUrls {
 	public static final String GET_EMAIL_ACCOUNT = "/getEmailAccount";
 	public static final String ADD_EMAIL_ACCOUNT = "/addEmailAccount";
 	public static final String EMAIL_TEMPLATES = "/admin/emailTemplates";
+	public static final String ADD_EMAIL_TEMPLATES = "/admin/addEmailTemplates";
 	
 	public static final String EXCEL = "/excel";
 	public static final String SAMPLE = "/sample";
@@ -48,7 +49,10 @@ public class RequestUrls {
 	public static final String DELETE_SUPPLIER = "/suppliers/{id}";
 	
 	public static final String REGISTRATION = "/registration";
+	public static final String REGISTRATION_CONFIRM = "/registration/confirm";
+	public static final String REGISTRATION_CONFIG = "/registration/config";
 	public static final String LOGIN = "/login";
+	public static final String FORGET_PASSWORD = "/forgetPassword";
 	public static final String HOME = "/home";
 	public static final String ACCESS_DENIED = "/accessDenied";
 	public static final String USERS = "/admin/users";

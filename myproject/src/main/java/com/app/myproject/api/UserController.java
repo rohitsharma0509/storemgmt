@@ -16,7 +16,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,22 +26,14 @@ import com.app.myproject.constants.RequestUrls;
 import com.app.myproject.model.User;
 import com.app.myproject.service.OrderService;
 import com.app.myproject.service.ProductService;
-import com.app.myproject.service.SecurityService;
 import com.app.myproject.service.UserService;
 import com.app.myproject.util.ChartGenerator;
 import com.app.myproject.util.CommonUtil;
-import com.app.myproject.validator.UserValidator;
 
 @Controller
 public class UserController {
 	@Inject
 	private UserService userService;
-
-	@Inject
-	private SecurityService securityService;
-
-	@Inject
-	private UserValidator userValidator;
 
 	@Inject
 	private ProductService productService;
@@ -59,33 +50,6 @@ public class UserController {
 	@Inject
 	private Environment environment;
 
-	@GetMapping(value = RequestUrls.REGISTRATION)
-	public String registration(Model model) {
-		model.addAttribute("userForm", new User());
-		return RequestUrls.REGISTRATION;
-	}
-
-	@PostMapping(value = RequestUrls.REGISTRATION)
-	public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
-		userValidator.validate(userForm, bindingResult);
-		if (bindingResult.hasErrors()) {
-			return RequestUrls.REGISTRATION;
-		}
-		userService.save(userForm);
-		securityService.autologin(userForm.getUsername(), userForm.getPasswordConfirm());
-		return "redirect:"+RequestUrls.HOME;
-	}
-
-	@GetMapping(value = RequestUrls.LOGIN)
-	public String login(Model model, String error, String logout) {
-		if (error != null) {
-			model.addAttribute("error", "Your username or password is invalid.");
-		}else if (logout != null) {
-			model.addAttribute("message", "You have been logged out successfully.");
-		}
-		return RequestUrls.LOGIN;
-	}
-
 	@GetMapping(value = { "/", RequestUrls.HOME })
 	public String home(Model model) {
 		Long totalProducts = productService.getNumberOfProducts();
@@ -100,6 +64,7 @@ public class UserController {
 		model.addAttribute(FieldNames.STOCK_STATUS, Base64.getEncoder().encodeToString(chartGenerator.createPieChart(alertProducts, (totalProducts - outOfStockProduct), outOfStockProduct)));
 		model.addAttribute(FieldNames.YEARLY_SALES_GRAPH, Base64.getEncoder().encodeToString(chartGenerator.createLineChart()));
 		model.addAttribute(FieldNames.MONTHLY_SALES_GRAPH, Base64.getEncoder().encodeToString(chartGenerator.createBarChart()));
+		model.addAttribute("compareGraph", Base64.getEncoder().encodeToString(chartGenerator.createCategoryChart())); 
 		return RequestUrls.HOME;
 	}
 
@@ -121,7 +86,7 @@ public class UserController {
 	
 	@GetMapping(value = RequestUrls.PERSONAL_INFO)
 	public String getUser(Model model) {
-		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userService.findByUsername(username);
 		java.util.Map<String, String> languages = new java.util.HashMap<>();
 		languages.put("en", "English");
@@ -134,7 +99,7 @@ public class UserController {
 	
 	@GetMapping(value = RequestUrls.MY_ACCOUNT)
 	public String myAccount(Model model) {
-		String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		User user = userService.findByUsername(username);
 		model.addAttribute("user", user);
 		return RequestUrls.MY_ACCOUNT;

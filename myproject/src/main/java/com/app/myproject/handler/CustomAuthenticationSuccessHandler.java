@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.app.myproject.constants.RequestUrls;
 import com.app.myproject.model.User;
 import com.app.myproject.service.UserService;
 
@@ -24,12 +25,12 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
         setLocale(authentication, request, response);
-        super.onAuthenticationSuccess(request, response, authentication);
+        response.sendRedirect(RequestUrls.HOME);
     }
 
     protected void setLocale(Authentication authentication, HttpServletRequest request, HttpServletResponse response) {
         if (authentication != null &&authentication.getPrincipal() != null) {
-        	String username = (String) authentication.getPrincipal();
+        	String username = authentication.getName();
             User user = userService.findByUsername(username);
             String locale = null == user || StringUtils.isEmpty(user.getLanguage()) ? "en" : user.getLanguage();
             userService.updateLocale(request, response, locale);

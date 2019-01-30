@@ -12,39 +12,61 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
-	private Long id;
-	@Column(name = "first_name")
-	private String firstName;
-	@Column(name = "last_name")
-	private String lastName;
-	private String username;
-	private String password;
-	private String passwordConfirm;
-	private String email;
-	@Column(name = "language")
-	private String language;
-	private String mobile;
-	@Column(name = "address_line1")
-	private String addressLine1;
-	@Column(name = "address_line2")
-	private String addressLine2;
-	@Column(name = "city")
-	private String city;
-	@Column(name = "state")
-	private String state;
-	@Column(name = "pincode")
-	private String pincode;
-	@Column(name = "country")
-	private String country;
-	private Set<Role> roles;
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+	private Long id;
+    
+	@Column(name = "first_name")
+	private String firstName;
+	
+	@Column(name = "last_name")
+	private String lastName;
+	
+	@Column(name = "username")
+	private String username;
+	
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "language")
+	private String language;
+	
+	@Column(name = "mobile")
+	private String mobile;
+	
+	@Column(name = "address_line1")
+	private String addressLine1;
+	
+	@Column(name = "address_line2")
+	private String addressLine2;
+	
+	@Column(name = "city")
+	private String city;
+	
+	@Column(name = "state")
+	private String state;
+	
+	@Column(name = "pincode")
+	private String pincode;
+	
+	@Column(name = "country")
+	private String country;
+	
+	@Column(name = "is_enabled", columnDefinition="tinyint(1)")
+    private Boolean isEnabled;
+	
+	@ManyToMany(cascade={CascadeType.ALL})
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
+
     public Long getId() {
         return id;
     }
@@ -83,15 +105,6 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    @Transient
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 
     public String getEmail() {
@@ -166,13 +179,19 @@ public class User {
 		this.country = country;
 	}
 
-	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     public Set<Role> getRoles() {
         return roles;
     }
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+    
+    public Boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 }

@@ -16,6 +16,7 @@ public class EmailUtil {
 
 	public void sendEmail(String[] to, String[] cc, String[] bcc, String subject, String body) {
 		try {
+		    System.out.println("Sending verification email...");
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
 			if(null != to && to.length>0){

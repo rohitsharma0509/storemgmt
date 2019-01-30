@@ -9,6 +9,7 @@
 		<table class="table">
 			<tr class="info"><th><span class="glyphicon glyphicon-users"><b><spring:message code="Users" text="Users" /></b></span></th></tr>
 			<tr><td><a href="${contextPath}<%=RequestUrls.USERS %>"><spring:message code="Users" text="Users" /></a></td></tr>
+			<!-- <tr><td><a href="${contextPath}<%=RequestUrls.REGISTRATION_CONFIG %>"><spring:message code="New User Settings" text="New User Settings" /></a></td></tr> -->
 		</table>
 	</div>
 	<div class="col-sm-6">
