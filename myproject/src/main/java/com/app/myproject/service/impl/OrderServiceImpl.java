@@ -20,8 +20,11 @@ import com.app.myproject.mapper.OrderMapper;
 import com.app.myproject.model.Order;
 import com.app.myproject.repository.OrderRepository;
 import com.app.myproject.service.OrderService;
+import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
@@ -68,14 +71,16 @@ public class OrderServiceImpl implements OrderService {
 		OrderDto orderDto = getOrder(id);
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		try  {
-			Font normalFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.ITALIC);
-			Font boldFont = new Font(Font.FontFamily.TIMES_ROMAN, 10, Font.BOLD);
+			Font normalFont = new Font(Font.FontFamily.COURIER, 10, Font.NORMAL);
+			Font boldFont = new Font(Font.FontFamily.COURIER, 10, Font.BOLD);
 			
-			Document document = new Document();
+			Document document = new Document(PageSize.A4);
 			PdfWriter.getInstance(document, baos);
 			document.open();
 			
 			Phrase customerPhrase = new Phrase("", normalFont);
+			customerPhrase.add("Order Number: "+ orderDto.getOrderNumber());
+			customerPhrase.add("\n");
 			customerPhrase.add(orderDto.getCustomerDto().getName());
 			customerPhrase.add("\n");
 			customerPhrase.add(orderDto.getCustomerDto().getAddressLine1());
@@ -89,91 +94,152 @@ public class OrderServiceImpl implements OrderService {
 			customerPhrase.add("Mobile: "+orderDto.getCustomerDto().getMobile());
 
 			PdfPTable table = new PdfPTable(2);
+			table.setWidthPercentage(100);
 			PdfPCell cell = new PdfPCell(customerPhrase);
 			cell.setBorder(Rectangle.NO_BORDER);
 			table.addCell(cell);
 			
-			Phrase datePhrase = new Phrase("", normalFont);
-			datePhrase.add(orderDto.getOrderDate());
+			Phrase datePhrase = new Phrase(orderDto.getOrderDate(), normalFont);
 
 			cell = new PdfPCell(datePhrase);
 			cell.setBorder(Rectangle.NO_BORDER);
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("", normalFont));
 			cell.setBorder(Rectangle.NO_BORDER);
-			cell.setFixedHeight(50);
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("", normalFont));
 			cell.setBorder(Rectangle.NO_BORDER);
-			cell.setFixedHeight(50);
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			document.add(table);
 			
 			table = new PdfPTable(6);
+			table.setWidthPercentage(100);
 			
 			cell = new PdfPCell(new Phrase("#", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+			cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
-			cell = new PdfPCell(new Phrase("Name", boldFont));
+			cell = new PdfPCell(new Phrase("Item", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("Description", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("Unit Cost", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("Qty", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			cell = new PdfPCell(new Phrase("Total", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setBackgroundColor(new BaseColor(233, 236, 239));
+			cell.setFixedHeight(30);
 			table.addCell(cell);
 			
 			int count = 0;
 			for(ProductDto productDto : orderDto.getProductDtos()) {
 				cell = new PdfPCell(new Phrase(count+1+"",normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);				
 				
 				cell = new PdfPCell(new Phrase(productDto.getName(), normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);
 				
 				cell = new PdfPCell(new Phrase(productDto.getCode(), normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);
 				
 				cell = new PdfPCell(new Phrase(productDto.getPerProductPrice()+"", normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);
 				
 				cell = new PdfPCell(new Phrase(productDto.getQuantity()+"", normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);
 				
 				cell = new PdfPCell(new Phrase((productDto.getPerProductPrice()*productDto.getQuantity())+"", normalFont));
+				cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+	            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+				cell.setFixedHeight(30);
 				table.addCell(cell);
 			}
 			
-			cell = new PdfPCell(new Phrase("", normalFont));
-			cell.setBorder(Rectangle.NO_BORDER);
-			table.addCell(cell);
-			
-			cell = new PdfPCell(new Phrase("", normalFont));
-			cell.setBorder(Rectangle.NO_BORDER);
-			table.addCell(cell);
-			
-			cell = new PdfPCell(new Phrase("", normalFont));
-			cell.setBorder(Rectangle.NO_BORDER);
-			table.addCell(cell);
-			
-			cell = new PdfPCell(new Phrase("", normalFont));
-			cell.setBorder(Rectangle.NO_BORDER);
-			table.addCell(cell);
-			
-			cell = new PdfPCell(new Phrase("Total Price: ", boldFont));
-			table.addCell(cell);
-			
-			cell = new PdfPCell(new Phrase(orderDto.getTotalAmount().toString(), normalFont));
-			table.addCell(cell);
+			cell = new PdfPCell(new Phrase("Subtotal", boldFont));
+			cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+			cell.setFixedHeight(30);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase(orderDto.getTotalAmount().toString(), normalFont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(5);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase("Tax", boldFont));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setFixedHeight(30);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase("0.0", normalFont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(5);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase("Total", boldFont));
+            cell.setHorizontalAlignment(Element.ALIGN_LEFT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setFixedHeight(30);
+            table.addCell(cell);
+            
+            cell = new PdfPCell(new Phrase(orderDto.getTotalAmount().toString(), normalFont));
+            cell.setFixedHeight(30);
+            cell.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+            cell.setColspan(5);
+            table.addCell(cell);
 			
 			document.add(table);
 			document.close();
@@ -182,14 +248,6 @@ public class OrderServiceImpl implements OrderService {
 		}
 		return baos;
 	}
-
-	/*@Override
-	public Page<Order> searchOrders(Order order, Pageable pageable) {
-		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues().withIgnoreCase()
-				.withMatcher("orderNumber", ExampleMatcher.GenericPropertyMatchers.contains());
-		Example<Order> example = Example.of(order, matcher);
-		return orderRepository.findAll(example, pageable);
-	}*/
 	
 	@Override
 	public CustomPage<OrderDto> searchOrders(Order order, Pageable pageable) {

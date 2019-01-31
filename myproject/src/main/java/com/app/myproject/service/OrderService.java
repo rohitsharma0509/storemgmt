@@ -19,15 +19,11 @@ public interface OrderService {
 
 	Page<Order> getOrders(Pageable pageable);
 	
-	//Page<Order> getSearchOrders(Pageable pageable, String orderNumber, LocalDate fromDate, LocalDate toDate);
-	
 	ByteArrayOutputStream createOrderPdf(Long id);
 
 	Long countByOrderDate(ZonedDateTime orderDate);
 	
 	Long countByOrderDateGreaterThanEqual(ZonedDateTime orderDate);
 
-	//Page<Order> searchOrders(Order order, Pageable pageable);
-	
 	CustomPage<OrderDto> searchOrders(Order order, Pageable pageable);
 }
