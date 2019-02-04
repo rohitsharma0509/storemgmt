@@ -64,8 +64,8 @@
 						<tr>
 							<td><input class="checkbox" type="checkbox" name="ids" value="${user.id}" /></td>
 							<td>${user.firstName} ${user.lastName}</td>
-				   			<td>${user.mobile}</td>
 				   			<td>${user.email}</td>
+				   			<td>${user.mobile}</td>
 							<td><a href="${contextPath}<%=RequestUrls.USERS %>?id=${user.id}"><i class="fa fa-edit" aria-hidden="true"></i></a>&nbsp;&nbsp;&nbsp;
 								<a href="#" onclick="callAjaxForDelete('${contextPath}<%=RequestUrls.USERS %>/${user.id}')"><i class="fa fa-trash" aria-hidden="true"></i></a>
 							</td>

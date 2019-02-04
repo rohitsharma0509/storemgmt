@@ -153,13 +153,17 @@ $(document).ready(function() {
     bottom: 0
 }
 </style>
-
+<div class="row">
+	<div class="col-sm-12" style="height:40px;"><b><a href="${contextPath}/products/all"><spring:message code="Products" text="Products" /></a></b> >
+		<spring:message code="Shopping Cart" text="Shopping Cart" />
+	</div>
+</div>
 <div class="row" style="height:10px;"></div>
 <div class="row">
 	<div class="col-sm-12">
 	<div class="card">
 	<form:form method="POST" modelAttribute="shoppingCart" class="form-horizontal" enctype="multipart/form-data" action="shoppingCart">
-		<div class="card-header bg-dark text-light">
+		<div class="card-header">
 	    	<i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;<spring:message code="Shopping cart" text="Shopping cart" />
 	   		<div class="clearfix"></div>
 	   </div>

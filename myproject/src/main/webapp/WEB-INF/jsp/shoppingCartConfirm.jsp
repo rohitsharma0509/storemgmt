@@ -74,7 +74,7 @@
   	});
 </script>
 <div class="row panel">
-	<div class="col-sm-12" style="height:40px;"><b><a href="${contextPath}/products"><spring:message code="Products" text="Products" /></a></b> >
+	<div class="col-sm-12" style="height:40px;"><b><a href="${contextPath}/products/all"><spring:message code="Products" text="Products" /></a></b> >
 	<%
 	String  action = "buy";
 	if(null != request.getParameter("id")){
@@ -91,7 +91,7 @@
 <div class="row">
 	<div class="col-sm-6">
 		<div class="card">
-			<div class="card-header bg-dark text-light">
+			<div class="card-header">
 	    		<i class="fa fa-user" aria-hidden="true"></i>&nbsp;<spring:message code="Customer" text="Customer" />
 	   			<div class="clearfix"></div>
 	   		</div>
@@ -161,7 +161,7 @@
 	</div>
 	<div class="col-sm-6">
 	<div class="card">
-		<div class="card-header bg-dark text-light">
+		<div class="card-header">
 	    	<i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;<spring:message code="Items" text="Items" />
 	   		<div class="clearfix"></div>
 	   </div>
@@ -203,7 +203,7 @@
      	<div class="card-footer">
 	         <div class="row">
 	        	<div class="col-sm-9 text-center"></div>
-	        	<div class="col-sm-3 text-center"><button type="submit" class="btn btn-sm btn-success"> <spring:message code="Buy Now" text="Buy Now" /></button></div>
+	        	<div class="col-sm-3 text-center"><button type="submit" class="btn btn-sm btn-info"> <spring:message code="Buy Now" text="Buy Now" /></button></div>
 			</div>
     	</div>
     	</c:if>

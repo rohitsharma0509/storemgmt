@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -41,7 +40,7 @@ public class OrderMapper {
 	public Order convertToOrder(java.util.List<ProductDto> productDtos, CustomerDto customerDto, Double totalAmount) {
 		Order order = new Order();
 		order.setOrderDate(ZonedDateTime.now());
-		order.setOrderNumber("ORD" + new Random().nextInt());
+		order.setOrderNumber(commonUtil.generateRandomDigits("ORD", 10, ""));
 		order.setTotalAmount(totalAmount);
 		order.setCustomer(customerDtoToCustomer(customerDto));
 		order.setOrderDetails(productDtosToOrderDetails(productDtos, order));
@@ -52,7 +51,7 @@ public class OrderMapper {
 	public Order shoppingCartToOrder(ShoppingCart shoppingCart) {
 		Order order = new Order();
 		order.setOrderDate(ZonedDateTime.now());
-		order.setOrderNumber("ORD" + new Random().nextInt());
+		order.setOrderNumber(commonUtil.generateRandomDigits("ORD", 10, ""));
 		order.setTotalAmount(shoppingCart.getTotalPrice());
 		order.setCustomer(customerDtoToCustomer(shoppingCart.getCustomerDto()));
 		order.setOrderDetails(productDtosToOrderDetails(

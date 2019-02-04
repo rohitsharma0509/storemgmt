@@ -57,17 +57,14 @@ public class ChartGenerator {
 			dataset.setValue("Alert", alertProducts);
 			dataset.setValue("Out Of Stock", outOfStockProduct);
 
-			JFreeChart chart = ChartFactory.createPieChart("Stock Status",
-					dataset, true, true, false);
-			Color color = new Color(222,226,230);
-			chart.setBackgroundPaint(color);
-			chart.setBorderPaint(color);
+			JFreeChart chart = ChartFactory.createPieChart("Stock Status", dataset, true, true, false);
 			PiePlot plot = (PiePlot) chart.getPlot();
-			plot.setBackgroundPaint(color);
+			plot.setLabelFont(new Font("SansSerif", Font.BOLD, 12));
+			plot.setBackgroundPaint(Color.WHITE);
 			plot.setSectionPaint("Non-Alert", Color.GREEN);
 			plot.setSectionPaint("Alert", Color.YELLOW);
 			plot.setSectionPaint("Out Of Stock", Color.RED);
-			plot.setOutlinePaint(color);
+			plot.setOutlineVisible(false);
 
 			BufferedImage bufferedImage = chart.createBufferedImage(500, 500);
 			ImageIO.write(bufferedImage, "png", buffer);
@@ -107,19 +104,12 @@ public class ChartGenerator {
 				}
 			}
 			
-			JFreeChart lineChart = ChartFactory.createLineChart("Last 5 Days Sales",
-					"Dates", "Sales", dataset1, PlotOrientation.VERTICAL, true,
-					true, false);
-			Color color = new Color(222,226,230);
-			lineChart.setBackgroundPaint(color);
-			lineChart.setBorderPaint(color);
-			Plot plot = lineChart.getPlot();
-			plot.setBackgroundPaint(color);
-			plot.setOutlinePaint(color);
+			JFreeChart chart = ChartFactory.createLineChart("Last 5 Days Sales", "Dates", "Sales", dataset1, PlotOrientation.VERTICAL, true, true, false);
+			Plot plot = chart.getPlot();
+			plot.setBackgroundPaint(Color.WHITE);
+			plot.setOutlineVisible(false);
 			
-			BufferedImage bufferedImage = lineChart.createBufferedImage(500,
-					500);
-
+			BufferedImage bufferedImage = chart.createBufferedImage(500, 500);
 			ImageIO.write(bufferedImage, "png", buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -139,16 +129,12 @@ public class ChartGenerator {
 					dataset2.addValue(0, "Sales", month.getDisplayName(TextStyle.SHORT, Locale.getDefault()));
 				}
 			}
-			JFreeChart barChart = ChartFactory.createBarChart("Monthly Sales", "Month", "Sales", dataset2, PlotOrientation.VERTICAL, true, true, false);
-			Color color = new Color(222,226,230);
-			barChart.setBackgroundPaint(color);
-			barChart.setBorderPaint(color);
-			Plot plot = barChart.getPlot();
-			plot.setBackgroundPaint(color);
-			plot.setOutlinePaint(color);
+			JFreeChart chart = ChartFactory.createBarChart("Monthly Sales", "Month", "Sales", dataset2, PlotOrientation.VERTICAL, true, true, false);
+			Plot plot = chart.getPlot();
+			plot.setBackgroundPaint(Color.WHITE);
+			plot.setOutlineVisible(false);
 			
-			
-			BufferedImage bufferedImage = barChart.createBufferedImage(500, 500);
+			BufferedImage bufferedImage = chart.createBufferedImage(500, 500);
 			ImageIO.write(bufferedImage, "png", buffer);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -214,6 +200,7 @@ public class ChartGenerator {
 	            plot.add(subplot2, 1);
 	            
 	            JFreeChart chart = new JFreeChart("Sales Comparision between "+lastYear+ " and "+currentYear, new Font("SansSerif", Font.BOLD, 12), plot, true);
+	            chart.setBackgroundPaint(Color.WHITE);
 	            
 	            BufferedImage bufferedImage = chart.createBufferedImage(1200, 500);
 	            ImageIO.write(bufferedImage, "png", buffer);

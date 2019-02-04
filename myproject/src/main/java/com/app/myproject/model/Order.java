@@ -34,14 +34,13 @@ public class Order {
 	@Column(name = "order_date", columnDefinition="timestamp")
 	private ZonedDateTime orderDate;
 	
-	@ManyToOne(cascade = CascadeType.PERSIST)
-	@JoinColumn(name = "customer_id")
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "customer_id", updatable = false)
 	private Customer customer;
 	
 	@OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
 	@JsonIgnore
-	//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-	private Set<OrderDetails> OrderDetails = new HashSet<>();
+	private Set<OrderDetails> orderDetails = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -84,10 +83,10 @@ public class Order {
 	}
 
 	public Set<OrderDetails> getOrderDetails() {
-		return OrderDetails;
+		return orderDetails;
 	}
 
 	public void setOrderDetails(Set<OrderDetails> orderDetails) {
-		OrderDetails = orderDetails;
+		this.orderDetails = orderDetails;
 	}
 }

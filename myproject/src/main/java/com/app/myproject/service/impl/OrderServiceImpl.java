@@ -2,6 +2,7 @@ package com.app.myproject.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.time.ZonedDateTime;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -47,7 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public OrderDto getOrder(Long id) {
-		return orderMapper.orderToOrderDto(orderRepository.findById(id).get());
+	    Optional<Order> optional = orderRepository.findById(id);
+	    if(optional.isPresent()) {
+	        return orderMapper.orderToOrderDto(optional.get());
+	    } else {
+	        return null;
+	    }
 	}
 
 	@Override

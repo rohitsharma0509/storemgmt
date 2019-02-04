@@ -3,6 +3,7 @@ package com.app.myproject.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -46,12 +47,22 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public ProductDto getProductByIdForCart(Long id) {
-		return productMapper.productToProductDto(productRepository.findById(id).get(), true);
+	    Optional<Product> optional = productRepository.findById(id);
+	    if(optional.isPresent()) {
+	        return productMapper.productToProductDto(optional.get(), true);
+	    } else {
+	        return null;
+	    }
 	}
 	
 	@Override
 	public ProductDto getProductById(Long id) {
-		return productMapper.productToProductDto(productRepository.findById(id).get());
+	    Optional<Product> optional = productRepository.findById(id);
+	    if(optional.isPresent()) {
+	        return productMapper.productToProductDto(optional.get());
+	    } else {
+            return null;
+        }
 	}
 	
 	public List<Product> getProductsByIds(Set<Long> ids) {
@@ -60,7 +71,10 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public Product addProduct(ProductDto productDto) {
-		return productRepository.save(productMapper.productDtoToProduct(productDto));
+	    Product product = productMapper.productDtoToProduct(productDto);
+	    productRepository.save(product);
+	    product.setCode(String.format("PRD%010d", product.getId()));
+		return productRepository.save(product);
 	}
 
 	@Override

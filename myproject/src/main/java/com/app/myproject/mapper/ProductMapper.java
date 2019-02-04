@@ -40,7 +40,7 @@ public class ProductMapper {
 	public ProductDto productToProductDto(Product product, boolean isCart) {
 		ProductDto productDto = new ProductDto();
 		productDto.setId(product.getId());
-		productDto.setCode(String.format("PRD%010d", product.getId()));
+		productDto.setCode(product.getCode());
 		productDto.setName(product.getName());
 		productDto.setBrandName(product.getBrandName());
 		productDto.setCategoryId(product.getCategoryId());
