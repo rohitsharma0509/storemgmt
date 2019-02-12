@@ -13,6 +13,11 @@
 					</div>
 					<div class="row">
 						<div class="col-sm-12">
+							<label for="year" class="control-label text-right">Year</label>${years}
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12">
 							<input type="submit" value="Search" style="margin-top: 15px;" class="btn btn-sm btn-info form-control">
 						</div>
 					</div>
